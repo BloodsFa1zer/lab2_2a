@@ -563,7 +563,7 @@ void totalMemoryUsageMB(size_t arrayMemoryUsageBytes) {
     size_t elementSizeBytes = sizeof(IPv4Address);
     size_t totalMemoryUsageBytes = arrayMemoryUsageBytes + elementSizeBytes * 10;
     double totalMemoryUsageMB = static_cast<double>(totalMemoryUsageBytes) / (1024 * 1024);
-    cout << "Memory usage of the dynamic array: " << totalMemoryUsageMB << " MB" << endl;
+    cout << "Memory usage of the array: " << totalMemoryUsageMB << " MB" << endl;
 }
 
 // TODO: скільки байтів виділяєится на кожну структуру
@@ -649,21 +649,20 @@ void benchmarkMode() {
 
         auto endTime = high_resolution_clock::now();
 
+        auto durationTotal = std::chrono::duration_cast<std::chrono::duration<double, std::nano>>(endTime - startTime).count();
+        auto durationCreateEmptyStack = std::chrono::duration_cast<std::chrono::duration<double, std::nano>>(endTimeCreateEmptyStack - startTimeCreateEmptyStack).count();
+        auto durationPushElements = std::chrono::duration_cast<std::chrono::duration<double, std::nano>>(endTimePushElements - startTimePushElements).count();
+        auto durationPopElement = std::chrono::duration_cast<std::chrono::duration<double, std::nano>>(endTimePopElement - startTimePopElement).count();
+        auto durationPeekElement = std::chrono::duration_cast<std::chrono::duration<double, std::nano>>(endTimePeekElement - startTimePeekElement).count();
+        auto durationIfStackIsEmpty =  std::chrono::duration_cast<std::chrono::duration<double, std::nano>>(endTimeIfStackIsEmpty - startTimeIfStackIsEmpty).count();
 
-
-        auto durationTotal = duration_cast<milliseconds>(endTime - startTime).count();
-        auto durationCreateEmptyStack = duration_cast<milliseconds>(endTimeCreateEmptyStack - startTimeCreateEmptyStack).count();
-        auto durationPushElements = duration_cast<milliseconds>(endTimePushElements - startTimePushElements).count();
-        auto durationPopElement = duration_cast<milliseconds>(endTimePopElement - startTimePopElement).count();
-        auto durationPeekElement = duration_cast<milliseconds>(endTimePeekElement - startTimePeekElement).count();
-        auto durationIfStackIsEmpty = duration_cast<milliseconds>(endTimeIfStackIsEmpty - startTimeIfStackIsEmpty).count();
 
         cout << "\n---------------------------\n";
-        cout << "\nTime creating empty stack: " << durationCreateEmptyStack << " milliseconds\n" <<
-             "\nTime pushing elements: " << durationPushElements << " milliseconds\n" <<
-             "\nTime poping element: " << durationPopElement << " milliseconds\n" <<
-             "\nTime peeking element: " << durationPeekElement << " milliseconds\n" <<
-             "\nTime checking if stack is empty: " << durationIfStackIsEmpty << " milliseconds\n" <<
+        cout << "\nTime creating empty stack: " << durationCreateEmptyStack / 1000.0 << " milliseconds\n" <<
+             "\nTime pushing elements: " << durationPushElements / 1000.0 << " milliseconds\n" <<
+             "\nTime poping element: " << durationPopElement / 1000.0 << " milliseconds\n" <<
+             "\nTime peeking element: " << durationPeekElement / 1000.0 << " milliseconds\n" <<
+             "\nTime checking if stack is empty: " << durationIfStackIsEmpty / 1000.0 << " milliseconds\n" <<
              "\nTotal array time: " << durationTotal / 1000.0 << "seconds\n";
 
         if (arrMode == 2) {
