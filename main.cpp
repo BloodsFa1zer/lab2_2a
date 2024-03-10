@@ -559,14 +559,14 @@ void demonstrationMode() {
     cout << "\n\n@@@@@ EXIT @@@@@\n\n";
 }
 
-void totalMemoryUsageMB(size_t arrayMemoryUsageBytes) {
+void totalMemoryUsageMB(int numberOfElements, size_t ArrayMemoryUsage) {
     size_t elementSizeBytes = sizeof(IPv4Address);
-    size_t totalMemoryUsageBytes = arrayMemoryUsageBytes + elementSizeBytes * 10;
+    size_t totalMemoryUsageBytes = ArrayMemoryUsage + elementSizeBytes * numberOfElements;
     double totalMemoryUsageMB = static_cast<double>(totalMemoryUsageBytes) / (1024 * 1024);
     cout << "Memory usage of the array: " << totalMemoryUsageMB << " MB" << endl;
 }
 
-// TODO: скільки байтів виділяєится на кожну структуру
+
 void benchmarkMode() {
 
     cout << "\nYou are now in the benchmark mode, time of each operation will be written afterwards\n";
@@ -649,9 +649,9 @@ void benchmarkMode() {
 
         auto endTime = high_resolution_clock::now();
 
-        auto durationTotal = std::chrono::duration_cast<std::chrono::duration<double, std::nano>>(endTime - startTime).count();
+        auto durationTotal = std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count();
         auto durationCreateEmptyStack = std::chrono::duration_cast<std::chrono::duration<double, std::nano>>(endTimeCreateEmptyStack - startTimeCreateEmptyStack).count();
-        auto durationPushElements = std::chrono::duration_cast<std::chrono::duration<double, std::nano>>(endTimePushElements - startTimePushElements).count();
+        auto durationPushElements = std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTimePushElements - startTimePushElements).count();
         auto durationPopElement = std::chrono::duration_cast<std::chrono::duration<double, std::nano>>(endTimePopElement - startTimePopElement).count();
         auto durationPeekElement = std::chrono::duration_cast<std::chrono::duration<double, std::nano>>(endTimePeekElement - startTimePeekElement).count();
         auto durationIfStackIsEmpty =  std::chrono::duration_cast<std::chrono::duration<double, std::nano>>(endTimeIfStackIsEmpty - startTimeIfStackIsEmpty).count();
@@ -659,18 +659,18 @@ void benchmarkMode() {
 
         cout << "\n---------------------------\n";
         cout << "\nTime creating empty stack: " << durationCreateEmptyStack / 1000.0 << " milliseconds\n" <<
-             "\nTime pushing elements: " << durationPushElements / 1000.0 << " milliseconds\n" <<
+             "\nTime pushing elements: " << durationPushElements << " milliseconds\n" <<
              "\nTime poping element: " << durationPopElement / 1000.0 << " milliseconds\n" <<
              "\nTime peeking element: " << durationPeekElement / 1000.0 << " milliseconds\n" <<
              "\nTime checking if stack is empty: " << durationIfStackIsEmpty / 1000.0 << " milliseconds\n" <<
              "\nTotal array time: " << durationTotal / 1000.0 << "seconds\n";
 
         if (arrMode == 2) {
-            totalMemoryUsageMB(sizeof(fixed));
+            totalMemoryUsageMB(fixed.countSize(), sizeof(fixed));
         } else if (arrMode == 1) {
-            totalMemoryUsageMB(sizeof(dynamic));
+            totalMemoryUsageMB(dynamic.countSize(), sizeof(dynamic));
         } else {
-            totalMemoryUsageMB(sizeof(linkedList));
+            totalMemoryUsageMB(linkedList.countSize(), sizeof(linkedList));
         }
         cout << "\n---------------------------\n";
 
